@@ -1,0 +1,80 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+}
+
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 0 20px;
+    background-color: rgb(63, 63, 238);
+}
+
+.container{
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.container .content-box{
+    border: 1px solid #ccc;
+    padding: 10px 20px 0;
+    border-radius: 10px;
+}
+
+.content-box .content{
+    border-top: 1px solid #ccc;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    flex-wrap: wrap;
+}
+
+.content-box .result-details{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: calc(100% - 200px);
+}
+
+.result-details li{
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin-right: 10px;
+}
+
+.content button{
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.2s ease;
+}
+
+.content button:hover{
+    background-color: #444;
+}
+
+.content button:active{
+    transform: scale(0.96);
+}
+
+.typing-test p span{
+    position: relative;
+}
+
+.typing-test p span.current{
+    color: orange;
+}
