@@ -2,8 +2,24 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: 'Space Mono', monospace;
+    transition: all 0.3s ease;
+}
 
+:root {
+    --primary-color: #1a1b4b;
+    --secondary-color: #4649FF;
+    --text-color: #fff;
+    --container-bg: rgba(255, 255, 255, 0.1);
+    --box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+}
+
+.dark-mode {
+    --primary-color: #0f0f1a;
+    --secondary-color: #2C2C54;
+    --text-color: #B8B8D4;
+    --container-bg: rgba(0, 0, 0, 0.5);
+    --box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
 body{
@@ -11,70 +27,152 @@ body{
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    padding: 0 20px;
-    background-color: rgb(63, 63, 238);
+    padding: 20px;
+    background: var(--primary-color);
+    color: var(--text-color);
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        radial-gradient(circle at 80% 50%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        radial-gradient(circle at 40% 70%, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    position: relative;
+    overflow: hidden;
+}
+
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background: var(--secondary-color);
+    border: none;
+    border-radius: 20px;
+    color: var(--text-color);
+    cursor: pointer;
+    box-shadow: var(--box-shadow);
 }
 
 .container{
-    background-color: #fff;
+    background: var(--container-bg);
     padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    border-radius: 20px;
+    box-shadow: var(--box-shadow);
+    backdrop-filter: blur(10px);
+    max-width: 1000px;
+    width: 100%;
 }
 
 .container .content-box{
-    border: 1px solid #ccc;
-    padding: 10px 20px 0;
-    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .content-box .content{
-    border-top: 1px solid #ccc;
-    margin-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: 15px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    padding: 10px 0;
-    flex-wrap: wrap;
+    padding: 15px 0;
+    gap: 10px;
 }
 
 .content-box .result-details{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: calc(100% - 200px);
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.container .input-field{
+    width: 100%;
+    padding: 15px;
+    opacity: 0;
+    z-index: -1;
+    position: absolute;
 }
 
 .result-details li{
     display: flex;
     align-items: center;
     list-style: none;
-    margin-right: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px 15px;
+    border-radius: 10px;
+    min-width: 120px;
+    justify-content: space-between;
 }
 
 .content button{
-    padding: 10px 20px;
-    background-color: #333;
-    color: #fff;
+    padding: 12px 25px;
+    background: var(--secondary-color);
+    color: var(--text-color);
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 16px;
-    transition: transform 0.2s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    margin: 0 auto;
 }
 
 .content button:hover{
-    background-color: #444;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .content button:active{
-    transform: scale(0.96);
+    transform: translateY(0) scale(0.98);
 }
 
 .typing-test p span{
     position: relative;
+    font-size: 18px;
+    letter-spacing: 1px;
 }
 
-.typing-test p span.current{
-    color: orange;
+.typing-test p span.active{
+    color: #FFD700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.typing-test p span.correct{
+    color: #00FF00;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    font-weight: bold;
+    background-color: rgba(0, 255, 0, 0.1);
+}
+
+.typing-test p span.incorrect{
+    color: #FF4444;
+    text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+    font-weight: bold;
+    background-color: rgba(255, 68, 68, 0.1);
+}
+
+.typing-test p {
+    filter: blur(4px);
+    transition: filter 0.5s ease;
+}
+
+.typing-test.unblurred p {
+    filter: blur(0);
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+    
+    .result-details li {
+        min-width: calc(50% - 10px);
+    }
+    
+    .content button {
+        width: 100%;
+        margin-top: 15px;
+    }
 }

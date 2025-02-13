@@ -5,41 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Typing Game</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
+    <button class="theme-toggle">Toggle Theme</button>
     <div class="container">
-        <input type="text" class="input-field " />
-
-            <div class="content-box">
-                <div class="typing-test">
-                    <p></p>
-                </div>
-                <div class="content">
+        <input type="text" class="input-field" />
+        <div class="content-box">
+            <div class="typing-test">
+                <p></p>
+            </div>
+            <div class="content">
                 <ul class="result-details">
                     <li class="time">
-                        <p> Time: </p>
-                        <span><b>60s</b></span>
+                        <p>Time:</p>
+                        <span>60s</span>
                     </li>
                     <li class="mistake">
-                        <p> Mistakes: </p>
-                        <span><b>0</b></span>
+                        <p>Mistakes:</p>
+                        <span>0</span>
                     </li>
                     <li class="wpm">
-                        <p> WPM: </p>
-                        <span><b>0</b></span>
+                        <p>WPM:</p>
+                        <span>0</span>
                     </li>
                     <li class="cpm">
-                        <p> CPM: </p>
-                        <span><b>0</b></span>
+                        <p>CPM:</p>
+                        <span>0</span>
                     </li>
                 </ul>
-
                 <button id="btn">Try Again</button>
             </div>
-            </div>
+        </div>
     </div>
-
     <script src="script.js"></script>
-    
 </body>
 </html>

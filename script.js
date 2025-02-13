@@ -1,20 +1,22 @@
 const input = document.querySelector('.input-field');
 const text = document.querySelector('.typing-test p');
-const time = document.querySelector('.time ');
-const mistake = document.querySelector('.mistake ');
-const wpm = document.querySelector('.wpm ');
-const cpm = document.querySelector('.cpm ');
+const time = document.querySelector('.time span');
+const mistake = document.querySelector('.mistake span');
+const wpm = document.querySelector('.wpm span');
+const cpm = document.querySelector('.cpm span');
 const btn = document.getElementById('btn');
 
-// set values
-
-let timeLeft = 60;
 let timer;
-let charCount = 0;
-let mistakeCount = 0;
+let maxTime = 60;
+let timeLeft = maxTime;
+let charIndex = 0;
+let mistakes = 0;
 let isTyping = false;
 
 function loadParagraph(){
+    const typingTest = document.querySelector('.typing-test');
+    typingTest.classList.remove('unblurred');
+    
     const paragraphs = [
         "A gentle breeze rustled through the trees, carrying the scent of blooming flowers. The rhythmic chirping of crickets blended harmoniously with the distant sound of a flowing river, offering peace.",
         "In the bustling city, people hurried through the streets, their footsteps echoing against tall buildings. The aroma of fresh bread from nearby bakeries mixed with the faint scent of rain.",
@@ -32,14 +34,101 @@ function loadParagraph(){
     for (const char of paragraphs[randomIndex]) {
         text.innerHTML += `<span>${char}</span>`;
 }
-    text.querySelectorAll('span')[0].classList.add('current');
+    text.querySelectorAll('span')[0].classList.add('active');
+    input.focus();
+    text.addEventListener('click',()=>input.focus());
+    
+    // Add small delay before unblurring
+    setTimeout(() => {
+        typingTest.classList.add('unblurred');
+    }, 300);
 }
 
+function initTyping(){
+    const char = text.querySelectorAll('span');
+    const typedChar = input.value.charAt(charIndex);
+    
+    // Handle backspace
+    if(input.value.length < charIndex) {
+        charIndex = input.value.length;
+        // Remove classes from current character
+        if(charIndex < char.length) {
+            char[charIndex].classList.add('correct', 'incorrect', 'active');
+            // Add active class to current character
+            if(charIndex > 0) {
+                char[charIndex-1].classList.remove('correct', 'incorrect');
+            }
+        }
+        return;
+    }
+
+    if(charIndex < char.length && timeLeft > 0){
+        if(!isTyping) {
+            timer = setInterval(initTimer, 1000);
+            isTyping = true;
+        }
+        
+        if(char[charIndex].innerText === typedChar){
+            char[charIndex].classList.add('correct');
+            console.log('correct');
+        } else{
+            mistakes++;
+            char[charIndex].classList.add('incorrect');
+            console.log('incorrect');
+        }
+        charIndex++;
+        // Check if we've typed all characters
+        if (charIndex >= char.length) {
+            clearInterval(timer);
+            isTyping = false;
+        } else {
+            char[charIndex].classList.add('active');
+        }
+        mistake.innerHTML = mistakes;
+        wpm.innerHTML = Math.round((charIndex / 5) / ((maxTime - timeLeft) / 60));
+        cpm.innerHTML = charIndex;
+        time.innerHTML = timeLeft + 's';
+    } else{
+        clearInterval(timer);
+        input.value = '';
+        isTyping = false;
+        timeLeft = maxTime;
+        charIndex = 0;
+        mistakes = 0;
+        time.innerHTML = maxTime + 's';
+        wpm.innerHTML = 0;
+        cpm.innerHTML = 0;
+    }
+}
+
+function initTimer(){
+    if(timeLeft > 0){
+        timeLeft--;
+        time.innerHTML = timeLeft + 's';  
+        wpm.innerHTML = Math.round((charIndex / 5) / ((maxTime - timeLeft) / 60));
+        cpm.innerHTML = Math.round((charIndex / 5) / ((maxTime - timeLeft) / 60));
+    } else{
+        clearInterval(timer);
+    }
+}
+
+input.addEventListener('input',initTyping);
+btn.addEventListener('click',()=>{
+    const typingTest = document.querySelector('.typing-test');
+    typingTest.classList.remove('unblurred');
+    
+    setTimeout(() => {
+        loadParagraph();
+        input.value = '';
+        clearInterval(timer);
+        timeLeft = maxTime;
+        charIndex = 0;
+        mistakes = 0;
+        isTyping = false;
+        wpm.innerHTML = 0;
+        cpm.innerHTML = 0;
+        mistake.innerHTML = 0;
+    }, 300);
+});
+
 loadParagraph();
-
-// Handle user input
-
-input.addEventListener('input', () => {
-    const char = text.querySelector('span.current');
-
-})
